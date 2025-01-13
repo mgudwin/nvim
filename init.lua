@@ -382,6 +382,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'pyright',
+        'ruff',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -419,6 +421,7 @@ require('lazy').setup({
   require 'plugins.mini',
   require 'plugins.neo-tree',
   require 'plugins.nvim-cmp',
+  require 'plugins.nvim-lint',
   require 'plugins.telescope',
   require 'plugins.todo-comments',
   require 'plugins.treesitter',
