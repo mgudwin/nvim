@@ -1,5 +1,7 @@
 vim.g.have_nerd_font = true
 
+vim.opt.textwidth = 100
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 

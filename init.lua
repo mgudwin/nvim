@@ -39,7 +39,8 @@ require 'custom.options.options'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  local out =
+    vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
   if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\n' .. out) end
 end
 
@@ -206,13 +207,28 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set(
+        { 'n', 'v' },
+        '<leader>sw',
+        builtin.grep_string,
+        { desc = '[S]earch current [W]ord' }
+      )
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      vim.keymap.set(
+        'n',
+        '<leader>s.',
+        builtin.oldfiles,
+        { desc = '[S]earch Recent Files ("." for repeat)' }
+      )
       vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set(
+        'n',
+        '<leader><leader>',
+        builtin.buffers,
+        { desc = '[ ] Find existing buffers' }
+      )
 
       -- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
       -- it is better explained there). This allows easily switching between pickers if you prefer using something else!
@@ -222,29 +238,59 @@ require('lazy').setup({
           local buf = event.buf
 
           -- Find references for the word under your cursor.
-          vim.keymap.set('n', 'grr', builtin.lsp_references, { buffer = buf, desc = '[G]oto [R]eferences' })
+          vim.keymap.set(
+            'n',
+            'grr',
+            builtin.lsp_references,
+            { buffer = buf, desc = '[G]oto [R]eferences' }
+          )
 
           -- Jump to the implementation of the word under your cursor.
           -- Useful when your language has ways of declaring types without an actual implementation.
-          vim.keymap.set('n', 'gri', builtin.lsp_implementations, { buffer = buf, desc = '[G]oto [I]mplementation' })
+          vim.keymap.set(
+            'n',
+            'gri',
+            builtin.lsp_implementations,
+            { buffer = buf, desc = '[G]oto [I]mplementation' }
+          )
 
           -- Jump to the definition of the word under your cursor.
           -- This is where a variable was first declared, or where a function is defined, etc.
           -- To jump back, press <C-t>.
-          vim.keymap.set('n', 'grd', builtin.lsp_definitions, { buffer = buf, desc = '[G]oto [D]efinition' })
+          vim.keymap.set(
+            'n',
+            'grd',
+            builtin.lsp_definitions,
+            { buffer = buf, desc = '[G]oto [D]efinition' }
+          )
 
           -- Fuzzy find all the symbols in your current document.
           -- Symbols are things like variables, functions, types, etc.
-          vim.keymap.set('n', 'gO', builtin.lsp_document_symbols, { buffer = buf, desc = 'Open Document Symbols' })
+          vim.keymap.set(
+            'n',
+            'gO',
+            builtin.lsp_document_symbols,
+            { buffer = buf, desc = 'Open Document Symbols' }
+          )
 
           -- Fuzzy find all the symbols in your current workspace.
           -- Similar to document symbols, except searches over your entire project.
-          vim.keymap.set('n', 'gW', builtin.lsp_dynamic_workspace_symbols, { buffer = buf, desc = 'Open Workspace Symbols' })
+          vim.keymap.set(
+            'n',
+            'gW',
+            builtin.lsp_dynamic_workspace_symbols,
+            { buffer = buf, desc = 'Open Workspace Symbols' }
+          )
 
           -- Jump to the type of the word under your cursor.
           -- Useful when you're not sure what type a variable is and you want to see
           -- the definition of its *type*, not where it was *defined*.
-          vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
+          vim.keymap.set(
+            'n',
+            'grt',
+            builtin.lsp_type_definitions,
+            { buffer = buf, desc = '[G]oto [T]ype Definition' }
+          )
         end,
       })
 
@@ -272,7 +318,12 @@ require('lazy').setup({
       )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set(
+        'n',
+        '<leader>sn',
+        function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end,
+        { desc = '[S]earch [N]eovim files' }
+      )
     end,
   },
 
@@ -355,7 +406,8 @@ require('lazy').setup({
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client:supports_method('textDocument/documentHighlight', event.buf) then
-            local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+            local highlight_augroup =
+              vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -382,7 +434,13 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client:supports_method('textDocument/inlayHint', event.buf) then
-            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
+            map(
+              '<leader>th',
+              function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+              end,
+              '[T]oggle Inlay [H]ints'
+            )
           end
         end,
       })
@@ -433,7 +491,8 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       for name, server in pairs(servers) do
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        server.capabilities =
+          vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
@@ -443,7 +502,14 @@ require('lazy').setup({
         on_init = function(client)
           if client.workspace_folders then
             local path = client.workspace_folders[1].name
-            if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
+            if
+              path ~= vim.fn.stdpath 'config'
+              and (
+                vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')
+              )
+            then
+              return
+            end
           end
 
           client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
@@ -495,12 +561,18 @@ require('lazy').setup({
           }
         end
       end,
+      formatters = {
+        stylua = { prepend_args = { '--column-width', '80' } },
+        black = { prepend_args = { '--line-length', '80' } },
+        prettier = { prepend_args = { '--print-width', '80' } },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'black' },
         markdown = { 'prettier' },
         r = { 'air' },
+        yaml = { 'prettier' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -629,7 +701,12 @@ require('lazy').setup({
   -- },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = { signs = false },
+  },
 
   { -- Collection of various small independent plugins/modules
     'nvim-mini/mini.nvim',
@@ -670,7 +747,19 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     config = function()
-      local filetypes = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local filetypes = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+      }
       require('nvim-treesitter').install(filetypes)
       vim.api.nvim_create_autocmd('FileType', {
         pattern = filetypes,
