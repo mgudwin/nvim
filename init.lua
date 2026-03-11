@@ -21,6 +21,14 @@
 
 --]]
 
+-- TODO:
+-- [ ] Otter.nvim for Quarto
+--     -- https://github.com/jmbuhr/otter.nvim
+-- [ ] Iron.nvim for REPL
+--     -- https://github.com/Vigemus/iron.nvim
+-- [ ] R.nvim for more R support, but Iron could suffice
+--     -- https://github.com/R-nvim/R.nvim
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -39,8 +47,14 @@ require 'custom.options.options'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out =
-    vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  local out = vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    '--branch=stable',
+    lazyrepo,
+    lazypath,
+  }
   if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\n' .. out) end
 end
 
@@ -203,26 +217,66 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set(
+        'n',
+        '<leader>sh',
+        builtin.help_tags,
+        { desc = '[S]earch [H]elp' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>sk',
+        builtin.keymaps,
+        { desc = '[S]earch [K]eymaps' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>sf',
+        builtin.find_files,
+        { desc = '[S]earch [F]iles' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>ss',
+        builtin.builtin,
+        { desc = '[S]earch [S]elect Telescope' }
+      )
       vim.keymap.set(
         { 'n', 'v' },
         '<leader>sw',
         builtin.grep_string,
         { desc = '[S]earch current [W]ord' }
       )
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+      vim.keymap.set(
+        'n',
+        '<leader>sg',
+        builtin.live_grep,
+        { desc = '[S]earch by [G]rep' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>sd',
+        builtin.diagnostics,
+        { desc = '[S]earch [D]iagnostics' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>sr',
+        builtin.resume,
+        { desc = '[S]earch [R]esume' }
+      )
       vim.keymap.set(
         'n',
         '<leader>s.',
         builtin.oldfiles,
         { desc = '[S]earch Recent Files ("." for repeat)' }
       )
-      vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
+      vim.keymap.set(
+        'n',
+        '<leader>sc',
+        builtin.commands,
+        { desc = '[S]earch [C]ommands' }
+      )
       vim.keymap.set(
         'n',
         '<leader><leader>',
@@ -233,7 +287,10 @@ require('lazy').setup({
       -- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
       -- it is better explained there). This allows easily switching between pickers if you prefer using something else!
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
+        group = vim.api.nvim_create_augroup(
+          'telescope-lsp-attach',
+          { clear = true }
+        ),
         callback = function(event)
           local buf = event.buf
 
@@ -297,10 +354,12 @@ require('lazy').setup({
       -- Override default behavior and theme when searching
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
+        builtin.current_buffer_fuzzy_find(
+          require('telescope.themes').get_dropdown {
+            winblend = 10,
+            previewer = false,
+          }
+        )
       end, { desc = '[/] Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
@@ -375,7 +434,10 @@ require('lazy').setup({
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
-        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        group = vim.api.nvim_create_augroup(
+          'kickstart-lsp-attach',
+          { clear = true }
+        ),
         callback = function(event)
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
@@ -384,7 +446,12 @@ require('lazy').setup({
           -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc, mode)
             mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            vim.keymap.set(
+              mode,
+              keys,
+              func,
+              { buffer = event.buf, desc = 'LSP: ' .. desc }
+            )
           end
 
           -- Rename the variable under your cursor.
@@ -393,7 +460,12 @@ require('lazy').setup({
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+          map(
+            'gra',
+            vim.lsp.buf.code_action,
+            '[G]oto Code [A]ction',
+            { 'n', 'x' }
+          )
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
@@ -405,9 +477,17 @@ require('lazy').setup({
           --
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client:supports_method('textDocument/documentHighlight', event.buf) then
-            local highlight_augroup =
-              vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
+          if
+            client
+            and client:supports_method(
+              'textDocument/documentHighlight',
+              event.buf
+            )
+          then
+            local highlight_augroup = vim.api.nvim_create_augroup(
+              'kickstart-lsp-highlight',
+              { clear = false }
+            )
             vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -421,10 +501,16 @@ require('lazy').setup({
             })
 
             vim.api.nvim_create_autocmd('LspDetach', {
-              group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
+              group = vim.api.nvim_create_augroup(
+                'kickstart-lsp-detach',
+                { clear = true }
+              ),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds {
+                  group = 'kickstart-lsp-highlight',
+                  buffer = event2.buf,
+                }
               end,
             })
           end
@@ -433,11 +519,16 @@ require('lazy').setup({
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client:supports_method('textDocument/inlayHint', event.buf) then
+          if
+            client
+            and client:supports_method('textDocument/inlayHint', event.buf)
+          then
             map(
               '<leader>th',
               function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+                vim.lsp.inlay_hint.enable(
+                  not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }
+                )
               end,
               '[T]oggle Inlay [H]ints'
             )
@@ -488,11 +579,17 @@ require('lazy').setup({
         -- You can add other tools here that you want Mason to install
       })
 
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-tool-installer').setup {
+        ensure_installed = ensure_installed,
+      }
 
       for name, server in pairs(servers) do
-        server.capabilities =
-          vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        server.capabilities = vim.tbl_deep_extend(
+          'force',
+          {},
+          capabilities,
+          server.capabilities or {}
+        )
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
@@ -505,25 +602,27 @@ require('lazy').setup({
             if
               path ~= vim.fn.stdpath 'config'
               and (
-                vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')
+                vim.uv.fs_stat(path .. '/.luarc.json')
+                or vim.uv.fs_stat(path .. '/.luarc.jsonc')
               )
             then
               return
             end
           end
 
-          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-            runtime = {
-              version = 'LuaJIT',
-              path = { 'lua/?.lua', 'lua/?/init.lua' },
-            },
-            workspace = {
-              checkThirdParty = false,
-              -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
-              --  See https://github.com/neovim/nvim-lspconfig/issues/3189
-              library = vim.api.nvim_get_runtime_file('', true),
-            },
-          })
+          client.config.settings.Lua =
+            vim.tbl_deep_extend('force', client.config.settings.Lua, {
+              runtime = {
+                version = 'LuaJIT',
+                path = { 'lua/?.lua', 'lua/?/init.lua' },
+              },
+              workspace = {
+                checkThirdParty = false,
+                -- NOTE: this is a lot slower and will cause issues when working on your own configuration.
+                --  See https://github.com/neovim/nvim-lspconfig/issues/3189
+                library = vim.api.nvim_get_runtime_file('', true),
+              },
+            })
         end,
         settings = {
           Lua = {},
@@ -540,7 +639,9 @@ require('lazy').setup({
     keys = {
       {
         '<leader>f',
-        function() require('conform').format { async = true, lsp_format = 'fallback' } end,
+        function()
+          require('conform').format { async = true, lsp_format = 'fallback' }
+        end,
         mode = '',
         desc = '[F]ormat buffer',
       },
@@ -593,7 +694,9 @@ require('lazy').setup({
           -- Build Step is needed for regex support in snippets.
           -- This step is not supported in many windows environments.
           -- Remove the below condition to re-enable on windows.
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then return end
+          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+            return
+          end
           return 'make install_jsregexp'
         end)(),
         dependencies = {
@@ -783,7 +886,6 @@ require('lazy').setup({
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-  -- require 'custom.keymaps',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
