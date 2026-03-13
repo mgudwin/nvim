@@ -9,7 +9,7 @@
 ========         ||   KICKSTART.NVIM   ||   |-----|          ========
 ========         ||                    ||   | === |          ========
 ========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
+========         ||                    ||   |:::::|          ========
 ========         |'-..................-'|   |____o|          ========
 ========         `"")----------------(""`   ___________      ========
 ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
@@ -24,8 +24,6 @@
 -- TODO:
 -- [ ] Otter.nvim for Quarto
 --     -- https://github.com/jmbuhr/otter.nvim
--- [ ] Iron.nvim for REPL
---     -- https://github.com/Vigemus/iron.nvim
 -- [ ] R.nvim for more R support, but Iron could suffice
 --     -- https://github.com/R-nvim/R.nvim
 
@@ -665,7 +663,9 @@ require('lazy').setup({
       formatters = {
         stylua = { prepend_args = { '--column-width', '80' } },
         black = { prepend_args = { '--line-length', '80' } },
-        prettier = { prepend_args = { '--print-width', '80' } },
+        prettier = {
+          prepend_args = { '--print-width', '80', '--prose-wrap', 'always' },
+        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -776,7 +776,7 @@ require('lazy').setup({
     },
   },
   {
-    'catppuccin/nvim',
+    'catppuccin-nvim/nvim',
     lazy = false,
     priority = 1000,
     config = function() vim.cmd.colorscheme 'catppuccin-mocha' end,
@@ -891,7 +891,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   -- { import = 'custom.options' },
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
