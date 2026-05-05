@@ -1,116 +1,116 @@
 return {
-  'Vigemus/iron.nvim',
-  config = function()
-    local iron = require 'iron.core'
-    local view = require 'iron.view'
-    local common = require 'iron.fts.common'
-
-    iron.setup {
-      config = {
-        -- Whether a repl should be discarded or not
-        scratch_repl = true,
-        -- Your repl definitions come here
-        repl_definition = {
-          sh = {
-            -- Can be a table or a function that
-            -- returns a table (see below)
-            command = { 'zsh' },
-          },
-          python = {
-            command = { 'ipython', '--no-autoindent' },
-            format = common.bracketed_paste_python,
-            block_dividers = { '# %%', '#%%' },
-            env = { PYTHON_BASIC_REPL = '1' }, --this is needed for python3.13 and up.
-          },
-          lua = {
-            command = { 'lua' },
-          },
-          julia = {
-            command = { 'julia' },
-            block_dividers = { '# %%', '#%%' },
-          },
-          r = {
-            command = { 'R' },
-          },
-        },
-        -- set the file type of the newly created repl to ft
-        -- bufnr is the buffer id of the REPL and ft is the filetype of the
-        -- language being used for the REPL.
-        repl_filetype = function(bufnr, ft)
-          return ft
-          -- or return a string name such as the following
-          -- return "iron"
-        end,
-        -- Send selections to the DAP repl if an nvim-dap session is running.
-        dap_integration = true,
-        -- How the repl window will be displayed
-        -- See below for more information
-        -- repl_open_cmd = 'belowright 15 split',
-        repl_open_cmd = 'vertical botright 80 split',
-        close_window_on_exit = true,
-      },
-      -- Iron doesn't set keymaps by default anymore.
-      -- You can set them here or manually add keymaps to the functions in iron.core
-      -- keymaps = {
-      --   toggle_repl = '<space>rr', -- toggles the repl open and closed.
-      --   -- If repl_open_command is a table as above, then the following keymaps are
-      --   -- available
-      --   -- toggle_repl_with_cmd_1 = "<space>rv",
-      --   -- toggle_repl_with_cmd_2 = "<space>rh",
-      --   restart_repl = '<space>rR', -- calls `IronRestart` to restart the repl
-      --   send_motion = '<space>sc',
-      --   visual_send = '<space>sc',
-      --   send_file = '<space>sf',
-      --   send_line = '<space>sl',
-      --   send_paragraph = '<space>sp',
-      --   send_until_cursor = '<space>su',
-      --   send_mark = '<space>sm',
-      --   send_code_block = '<space>sb',
-      --   send_code_block_and_move = '<space>sn',
-      --   mark_motion = '<space>mc',
-      --   mark_visual = '<space>mc',
-      --   remove_mark = '<space>md',
-      --   cr = '<space>s<cr>',
-      --   interrupt = '<space>s<space>',
-      --   exit = '<space>sq',
-      --   clear = '<space>cl',
-      -- },
-      keymaps = {
-        toggle_repl = '<space>it', -- toggles the repl open and closed.
-        -- If repl_open_command is a table as above, then the following keymaps are
-        -- available
-        -- toggle_repl_with_cmd_1 = "<space>rv",
-        -- toggle_repl_with_cmd_2 = "<space>rh",
-        restart_repl = '<space>ir', -- calls `IronRestart` to restart the repl
-        send_motion = '<space>im',
-        visual_send = '<space>iv',
-        send_file = '<space>if',
-        send_line = '<space>il',
-        send_paragraph = '<space>ip',
-        send_until_cursor = '<space>iu',
-        send_mark = '<space>im',
-        send_code_block = '<space>ib',
-        send_code_block_and_move = '<space>in',
-        -- mark_motion = '<space>mc',
-        -- mark_visual = '<space>mc',
-        -- remove_mark = '<space>md',
-        cr = '<space>i<cr>',
-        interrupt = '<space>ii',
-        exit = '<space>iq',
-        clear = '<space>ic',
-      },
-      -- If the highlight is on, you can change how it looks
-      -- For the available options, check nvim_set_hl
-      highlight = {
-        italic = true,
-      },
-      ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
-    }
-
-    -- iron also has a list of commands, see :h iron-commands for all available commands
-    -- vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
-    -- vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
-    -- vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
-    -- vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
-  end,
+  --   'Vigemus/iron.nvim',
+  --   config = function()
+  --     local iron = require 'iron.core'
+  --     local view = require 'iron.view'
+  --     local common = require 'iron.fts.common'
+  --
+  --     iron.setup {
+  --       config = {
+  --         -- Whether a repl should be discarded or not
+  --         scratch_repl = true,
+  --         -- Your repl definitions come here
+  --         repl_definition = {
+  --           sh = {
+  --             -- Can be a table or a function that
+  --             -- returns a table (see below)
+  --             command = { 'zsh' },
+  --           },
+  --           python = {
+  --             command = { 'ipython', '--no-autoindent' },
+  --             format = common.bracketed_paste_python,
+  --             block_dividers = { '# %%', '#%%' },
+  --             env = { PYTHON_BASIC_REPL = '1' }, --this is needed for python3.13 and up.
+  --           },
+  --           lua = {
+  --             command = { 'lua' },
+  --           },
+  --           julia = {
+  --             command = { 'julia' },
+  --             block_dividers = { '# %%', '#%%' },
+  --           },
+  --           r = {
+  --             command = { 'R' },
+  --           },
+  --         },
+  --         -- set the file type of the newly created repl to ft
+  --         -- bufnr is the buffer id of the REPL and ft is the filetype of the
+  --         -- language being used for the REPL.
+  --         repl_filetype = function(bufnr, ft)
+  --           return ft
+  --           -- or return a string name such as the following
+  --           -- return "iron"
+  --         end,
+  --         -- Send selections to the DAP repl if an nvim-dap session is running.
+  --         dap_integration = true,
+  --         -- How the repl window will be displayed
+  --         -- See below for more information
+  --         -- repl_open_cmd = 'belowright 15 split',
+  --         repl_open_cmd = 'vertical botright 80 split',
+  --         close_window_on_exit = true,
+  --       },
+  --       -- Iron doesn't set keymaps by default anymore.
+  --       -- You can set them here or manually add keymaps to the functions in iron.core
+  --       -- keymaps = {
+  --       --   toggle_repl = '<space>rr', -- toggles the repl open and closed.
+  --       --   -- If repl_open_command is a table as above, then the following keymaps are
+  --       --   -- available
+  --       --   -- toggle_repl_with_cmd_1 = "<space>rv",
+  --       --   -- toggle_repl_with_cmd_2 = "<space>rh",
+  --       --   restart_repl = '<space>rR', -- calls `IronRestart` to restart the repl
+  --       --   send_motion = '<space>sc',
+  --       --   visual_send = '<space>sc',
+  --       --   send_file = '<space>sf',
+  --       --   send_line = '<space>sl',
+  --       --   send_paragraph = '<space>sp',
+  --       --   send_until_cursor = '<space>su',
+  --       --   send_mark = '<space>sm',
+  --       --   send_code_block = '<space>sb',
+  --       --   send_code_block_and_move = '<space>sn',
+  --       --   mark_motion = '<space>mc',
+  --       --   mark_visual = '<space>mc',
+  --       --   remove_mark = '<space>md',
+  --       --   cr = '<space>s<cr>',
+  --       --   interrupt = '<space>s<space>',
+  --       --   exit = '<space>sq',
+  --       --   clear = '<space>cl',
+  --       -- },
+  --       keymaps = {
+  --         toggle_repl = '<space>it', -- toggles the repl open and closed.
+  --         -- If repl_open_command is a table as above, then the following keymaps are
+  --         -- available
+  --         -- toggle_repl_with_cmd_1 = "<space>rv",
+  --         -- toggle_repl_with_cmd_2 = "<space>rh",
+  --         restart_repl = '<space>ir', -- calls `IronRestart` to restart the repl
+  --         send_motion = '<space>im',
+  --         visual_send = '<space>iv',
+  --         send_file = '<space>if',
+  --         send_line = '<space>il',
+  --         send_paragraph = '<space>ip',
+  --         send_until_cursor = '<space>iu',
+  --         send_mark = '<space>iM',
+  --         send_code_block = '<space>ib',
+  --         send_code_block_and_move = '<space>in',
+  --         -- mark_motion = '<space>mc',
+  --         -- mark_visual = '<space>mc',
+  --         -- remove_mark = '<space>md',
+  --         cr = '<space>i<cr>',
+  --         interrupt = '<space>ii',
+  --         exit = '<space>iq',
+  --         clear = '<space>ic',
+  --       },
+  --       -- If the highlight is on, you can change how it looks
+  --       -- For the available options, check nvim_set_hl
+  --       highlight = {
+  --         italic = true,
+  --       },
+  --       ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+  --     }
+  --
+  --     -- iron also has a list of commands, see :h iron-commands for all available commands
+  --     -- vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
+  --     -- vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
+  --     -- vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
+  --     -- vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+  --   end,
 }

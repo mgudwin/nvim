@@ -24,8 +24,6 @@
 -- TODO:
 -- [ ] Otter.nvim for Quarto
 --     -- https://github.com/jmbuhr/otter.nvim
--- [ ] R.nvim for more R support, but Iron could suffice
---     -- https://github.com/R-nvim/R.nvim
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
@@ -128,7 +126,7 @@ require('lazy').setup({
       -- Document existing key chains
       spec = {
         { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>i', group = '[I]ron REPL', mode = { 'n', 'v' } },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -840,7 +838,7 @@ require('lazy').setup({
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function() return '%2l:%-2v' end
+      statusline.section_location = function() return '%2l/%L:%-2v %P' end
 
       -- ... and there is more!
       --  Check out: https://github.com/nvim-mini/mini.nvim
